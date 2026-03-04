@@ -1,0 +1,134 @@
+{
+  "project_name": "TuningTalalkozo",
+  "theme_identity": {
+    "name": "Underground Tuner Social",
+    "vibe": "Aggressive, Nocturnal, High-Performance, Mechanical",
+    "description": "A dark-mode-first social platform for car enthusiasts. Think 'Need for Speed' UI meets Facebook usability. High contrast, sharp edges, and magma orange accents against deep asphalt backgrounds."
+  },
+  "typography": {
+    "font_family": {
+      "headings": "Chakra Petch, sans-serif",
+      "body": "Inter, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "scale": {
+      "h1": "text-5xl md:text-7xl font-bold tracking-tighter uppercase",
+      "h2": "text-3xl md:text-5xl font-bold tracking-tight uppercase",
+      "h3": "text-2xl md:text-3xl font-semibold tracking-normal uppercase",
+      "body_lg": "text-lg leading-relaxed",
+      "body_base": "text-base leading-relaxed text-zinc-400",
+      "caption": "text-sm text-zinc-500 uppercase tracking-wider"
+    },
+    "import_instruction": "Import 'Chakra Petch' (weights 400, 500, 600, 700) and 'Inter' from Google Fonts in index.css"
+  },
+  "colors": {
+    "palette": {
+      "background": "#09090b",
+      "foreground": "#fafafa",
+      "card": "#18181b",
+      "card_foreground": "#fafafa",
+      "popover": "#09090b",
+      "popover_foreground": "#fafafa",
+      "primary": "#FF5722",
+      "primary_foreground": "#ffffff",
+      "secondary": "#27272a",
+      "secondary_foreground": "#fafafa",
+      "muted": "#27272a",
+      "muted_foreground": "#a1a1aa",
+      "accent": "#FF5722",
+      "accent_foreground": "#ffffff",
+      "destructive": "#ef4444",
+      "destructive_foreground": "#fafafa",
+      "border": "#27272a",
+      "input": "#27272a",
+      "ring": "#FF5722"
+    },
+    "usage_rules": {
+      "background": "Use zinc-950 (#09090b) as the global background. Never use pure black (#000000).",
+      "brand_color": "Use #FF5722 (Magma Orange) for primary actions, active states, and key highlights. Do NOT overuse it; let it pop against the dark theme.",
+      "gradients": "Avoid complex gradients. Use subtle linear gradients for button hovers (e.g., Orange-500 to Orange-600).",
+      "text": "Headings are always White (#fafafa). Body text is Zinc-400 (#a1a1aa) to reduce eye strain."
+    }
+  },
+  "layout": {
+    "container": {
+      "max_width": "max-w-7xl",
+      "padding": "px-4 md:px-8"
+    },
+    "spacing": {
+      "section_gap": "gap-12 md:gap-24",
+      "card_padding": "p-6"
+    },
+    "grid_system": {
+      "dashboard": "grid grid-cols-1 md:grid-cols-12 gap-6",
+      "feed": "max-w-2xl mx-auto space-y-8",
+      "marketing": "grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
+    },
+    "border_radius": {
+      "default": "rounded-md",
+      "buttons": "rounded-sm",
+      "cards": "rounded-lg"
+    }
+  },
+  "components": {
+    "buttons": {
+      "base": "font-chakra font-bold uppercase tracking-wider transition-all duration-200",
+      "primary": "bg-primary text-primary-foreground hover:bg-orange-600 shadow-[0_0_20px_rgba(255,87,34,0.3)] hover:shadow-[0_0_30px_rgba(255,87,34,0.5)]",
+      "secondary": "bg-zinc-800 text-white hover:bg-zinc-700 border border-zinc-700"
+    },
+    "cards": {
+      "style": "bg-zinc-900/50 border border-white/5 backdrop-blur-sm",
+      "hover": "hover:border-primary/50 transition-colors duration-300"
+    },
+    "inputs": {
+      "style": "bg-zinc-950 border-zinc-800 focus:border-primary focus:ring-1 focus:ring-primary/50 rounded-sm text-white placeholder:text-zinc-600"
+    },
+    "navigation": {
+      "style": "sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10"
+    }
+  },
+  "visual_enhancers": {
+    "textures": "Use subtle noise overlays on large dark backgrounds to prevent banding and add 'grit'.",
+    "glows": "Use 'shadow-orange-glow' (custom class) for active elements: box-shadow: 0 0 15px rgba(255, 87, 34, 0.4).",
+    "borders": "Use 1px solid borders with low opacity (white/10) to define structure without clutter.",
+    "icons": "Use Lucide-React icons. Stroke width: 1.5px for elegance, 2px for active states."
+  },
+  "image_urls": {
+    "landing_hero": {
+      "url": "https://images.unsplash.com/photo-1758956928707-053c043a7b07?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTJ8MHwxfHNlYXJjaHwzfHx0dW5lZCUyMHNwb3J0cyUyMGNhciUyMG5pZ2h0JTIwY2l0eSUyMHN0cmVldHxlbnwwfHx8fDE3NzI1NTE1Mzl8MA&ixlib=rb-4.1.0&q=85",
+      "alt": "Tuned sports car at night"
+    },
+    "login_bg": {
+      "url": "https://images.unsplash.com/photo-1771931108145-f961735d24dc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NjV8MHwxfHNlYXJjaHwxfHx1bmRlcmdyb3VuZCUyMHBhcmtpbmclMjBsb3QlMjBkYXJrJTIwbW9vZHxlbnwwfHx8fDE3NzI1NTE1Mzl8MA&ixlib=rb-4.1.0&q=85",
+      "alt": "Dark underground parking"
+    },
+    "user_avatars": [
+      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop",
+      "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&h=150&fit=crop"
+    ],
+    "feed_posts": [
+      "https://images.unsplash.com/photo-1767838533907-294330d1228b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTJ8MHwxfHNlYXJjaHwxfHx0dW5lZCUyMHNwb3J0cyUyMGNhciUyMG5pZ2h0JTIwY2l0eSUyMHN0cmVldHxlbnwwfHx8fDE3NzI1NTE1Mzl8MA&ixlib=rb-4.1.0&q=85",
+      "https://images.unsplash.com/photo-1768015904728-c32484ffa787?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTJ8MHwxfHNlYXJjaHwyfHx0dW5lZCUyMHNwb3J0cyUyMGNhciUyMG5pZ2h0JTIwY2l0eSUyMHN0cmVldHxlbnwwfHx8fDE3NzI1NTE1Mzl8MA&ixlib=rb-4.1.0&q=85"
+    ],
+    "tuning_parts": "https://images.unsplash.com/photo-1615746363486-92cd8c5e0a90?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzJ8MHwxfHNlYXJjaHwxfHxhdXRvbW90aXZlJTIwbWVjaGFuaWMlMjB3b3Jrc2hvcCUyMHRvb2xzJTIwZGV0YWlsZWR8ZW58MHx8fHwxNzcyNTUxNTQwfDA&ixlib=rb-4.1.0&q=85"
+  },
+  "instructions_to_main_agent": [
+    "Install 'sonner' for toast notifications if not present.",
+    "Install 'lucide-react' for icons.",
+    "Update tailwind.config.js to include the custom colors and font families.",
+    "Create a 'Layout' component that enforces the dark theme background min-h-screen.",
+    "Ensure all interactive elements have 'data-testid' attributes.",
+    "Use the provided image URLs for mock data/placeholders.",
+    "Implement the 'Chakra Petch' font for all headings (h1-h6) and 'Inter' for body.",
+    "For the Wallet page, strictly follow the screenshot layout: Orange balance card on top, grid of amounts below.",
+    "For Login, use the provided parking lot image as a side-panel or background with overlay."
+  ],
+  "universal_guidelines": [
+    "Do NOT use gradients for backgrounds, only for subtle button states.",
+    "Do NOT center text by default; use left alignment for body text.",
+    "Use generous padding (p-6, p-8) inside cards.",
+    "Ensure high contrast: #fafafa on #09090b.",
+    "All buttons must have a hover state transformation (scale-105 or brightness-110).",
+    "Use 'backdrop-blur' carefully; only for sticky navs and modals."
+  ]
+}
