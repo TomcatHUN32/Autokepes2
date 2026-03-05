@@ -31,9 +31,11 @@ export const FriendRequests = () => {
   const fetchRequests = async () => {
     try {
       const response = await api.get('/friends/pending');
-      setRequests(response.data);
+      // Biztosítsuk, hogy mindig tömböt kapunk
+      setRequests(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error('Failed to fetch friend requests:', error);
+      setRequests([]);
     }
   };
 

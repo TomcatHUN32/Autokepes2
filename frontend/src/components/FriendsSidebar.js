@@ -61,26 +61,35 @@ export const FriendsSidebar = () => {
   const fetchFriends = async () => {
     try {
       const response = await api.get('/friends/list');
-      setFriends(response.data);
-      setFilteredFriends(response.data);
+      const friendsList = Array.isArray(response.data) ? response.data : [];
+      setFriends(friendsList);
+      setFilteredFriends(friendsList);
     } catch (error) {
       console.error('Failed to fetch friends:', error);
+      setFriends([]);
+      setFilteredFriends([]);
     }
   };
 
   const fetchUnreadCounts = async () => {
     try {
       const response = await api.get('/friends/list');
+      const friendsList = Array.isArray(response.data) ? response.data : [];
       const counts = {};
       
       // For each friend, get unread message count
-      for (const friend of response.data) {
-        const messages = await api.get(`/messages/${friend.user_id}`);
-        const unread = messages.data.filter(
-          (msg) => !msg.read_status && msg.from_user_id === friend.user_id
-        ).length;
-        if (unread > 0) {
-          counts[friend.user_id] = unread;
+      for (const friend of friendsList) {
+        try {
+          const messages = await api.get(`/messages/${friend.user_id}`);
+          const messagesList = Array.isArray(messages.data) ? messages.data : [];
+          const unread = messagesList.filter(
+            (msg) => !msg.read_status && msg.from_user_id === friend.user_id
+          ).length;
+          if (unread > 0) {
+            counts[friend.user_id] = unread;
+          }
+        } catch (err) {
+          console.error(`Failed to fetch messages for ${friend.user_id}:`, err);
         }
       }
       
