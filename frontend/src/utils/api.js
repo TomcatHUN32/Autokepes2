@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+// Ha nincs REACT_APP_BACKEND_URL beállítva, használjunk relatív URL-t (ugyanaz a domain)
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API_URL = `${BACKEND_URL}/api`;
 
 const api = axios.create({

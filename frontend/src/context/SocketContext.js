@@ -4,7 +4,8 @@ import { useAuth } from './AuthContext';
 
 const SocketContext = createContext();
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+// Ha nincs REACT_APP_BACKEND_URL beállítva, használjuk az aktuális domain-t
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || window.location.origin;
 const SOCKET_PATH = '/api/socket.io';
 
 export const SocketProvider = ({ children }) => {
