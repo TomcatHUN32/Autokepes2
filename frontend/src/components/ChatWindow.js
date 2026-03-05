@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { useSocket } from '../context/SocketContext';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 import { Button } from './ui/button';
@@ -12,56 +11,18 @@ import { toast } from 'sonner';
 
 export const ChatWindow = ({ friend, onClose, unreadCount, onMessageRead }) => {
   const { user } = useAuth();
-  const socketRef = useSocket();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [imageBase64, setImageBase64] = useState('');
   const [minimized, setMinimized] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
-  const typingTimeoutRef = useRef(null);
 
+  // Fetch messages on mount and poll every 3 seconds
   useEffect(() => {
     fetchMessages();
-
-    if (socketRef?.current) {
-      socketRef.current.on('receive_message', (data) => {
-        if (
-          (data.from_user_id === friend.user_id && data.to_user_id === user.user_id) ||
-          (data.from_user_id === user.user_id && data.to_user_id === friend.user_id)
-        ) {
-          setMessages((prev) => [...prev, data]);
-          
-          // Mark as read if chat is open
-          if (data.from_user_id === friend.user_id) {
-            onMessageRead?.();
-          }
-        }
-      });
-
-      socketRef.current.on('typing_indicator', (data) => {
-        if (data.from_user_id === friend.user_id) {
-          setIsTyping(true);
-          if (typingTimeoutRef.current) {
-            clearTimeout(typingTimeoutRef.current);
-          }
-          typingTimeoutRef.current = setTimeout(() => {
-            setIsTyping(false);
-          }, 2000);
-        }
-      });
-    }
-
-    return () => {
-      if (socketRef?.current) {
-        socketRef.current.off('receive_message');
-        socketRef.current.off('typing_indicator');
-      }
-      if (typingTimeoutRef.current) {
-        clearTimeout(typingTimeoutRef.current);
-      }
-    };
-  }, [friend, user, socketRef]);
+    const interval = setInterval(fetchMessages, 3000);
+    return () => clearInterval(interval);
+  }, [friend]);
 
   useEffect(() => {
     scrollToBottom();
@@ -70,7 +31,8 @@ export const ChatWindow = ({ friend, onClose, unreadCount, onMessageRead }) => {
   const fetchMessages = async () => {
     try {
       const response = await api.get(`/messages/${friend.user_id}`);
-      setMessages(response.data);
+      const newMessages = Array.isArray(response.data) ? response.data : [];
+      setMessages(newMessages);
       onMessageRead?.();
     } catch (error) {
       console.error('Failed to fetch messages:', error);
@@ -79,15 +41,6 @@ export const ChatWindow = ({ friend, onClose, unreadCount, onMessageRead }) => {
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const handleTyping = () => {
-    if (socketRef?.current?.connected) {
-      socketRef.current.emit('typing', {
-        from_user_id: user.user_id,
-        to_user_id: friend.user_id,
-      });
-    }
   };
 
   const handleImageUpload = (e) => {
@@ -105,20 +58,23 @@ export const ChatWindow = ({ friend, onClose, unreadCount, onMessageRead }) => {
     }
   };
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
-    if ((!newMessage.trim() && !imageBase64) || !socketRef?.current?.connected) return;
+    if (!newMessage.trim() && !imageBase64) return;
 
     const messageContent = imageBase64 ? `[IMAGE]${imageBase64}` : newMessage;
 
-    socketRef.current.emit('send_message', {
-      from_user_id: user.user_id,
-      to_user_id: friend.user_id,
-      content: messageContent,
-    });
-
-    setNewMessage('');
-    setImageBase64('');
+    try {
+      await api.post('/messages/send', {
+        to_user_id: friend.user_id,
+        content: messageContent,
+      });
+      setNewMessage('');
+      setImageBase64('');
+      fetchMessages(); // Refresh messages immediately
+    } catch (error) {
+      toast.error('Nem sikerült elküldeni az üzenetet');
+    }
   };
 
   const renderMessageContent = (content) => {
@@ -143,9 +99,7 @@ export const ChatWindow = ({ friend, onClose, unreadCount, onMessageRead }) => {
           <div>
             <p className="text-sm font-semibold text-white">{friend.username}</p>
             <p className="text-xs text-zinc-500">
-              {isTyping ? (
-                <span className="text-primary">Gépel...</span>
-              ) : friend.online_status === 'online' ? (
+              {friend.online_status === 'online' ? (
                 <span className="text-green-500">● Online</span>
               ) : (
                 <span>Offline</span>
@@ -226,10 +180,7 @@ export const ChatWindow = ({ friend, onClose, unreadCount, onMessageRead }) => {
                 type="text"
                 placeholder="Üzenet írása..."
                 value={newMessage}
-                onChange={(e) => {
-                  setNewMessage(e.target.value);
-                  handleTyping();
-                }}
+                onChange={(e) => setNewMessage(e.target.value)}
                 className="flex-1 bg-zinc-950 border-zinc-700 text-white placeholder:text-zinc-600 text-sm"
               />
               <Button

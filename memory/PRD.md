@@ -23,13 +23,25 @@ GitHub repo: autotalalka2 - Add image upload functionality when creating events
   - Drag-and-drop upload area
   - Image preview after upload
   - Delete button to remove uploaded image
-  - File type and size validation on client side
   - Images displayed on event cards
 
+### Messaging System Update (2026-03-05)
+- **Changed from Socket.IO to Polling-based messaging**
+  - Simpler, more reliable for production deployments
+  - Messages polled every 3 seconds
+  - POST `/api/messages/send` endpoint for sending messages
+  - No WebSocket required
+
 ## Tech Stack
-- Backend: FastAPI, MongoDB, Socket.IO
+- Backend: FastAPI, MongoDB
 - Frontend: React, TailwindCSS
 - Image storage: Local filesystem
+- Messaging: HTTP polling (no WebSocket)
+
+## Deployment Notes for ArubaCloud
+- Backend service: systemd unit at `/etc/systemd/system/backend.service`
+- Nginx config: `/etc/nginx/sites-enabled/default`
+- No Socket.IO proxy needed anymore
 
 ## What's Been Implemented
 - [x] Image upload endpoint
@@ -37,9 +49,9 @@ GitHub repo: autotalalka2 - Add image upload functionality when creating events
 - [x] Frontend upload UI with preview
 - [x] File validation (size & type)
 - [x] Image display on event cards
-- [x] Automatic image cleanup when event deleted
+- [x] Polling-based messaging system
+- [x] Array.isArray fixes for API responses
 
 ## Next Action Items
-- Test full flow with real user registration and event creation
-- Add image compression for large images
-- Consider CDN for production deployment
+- Deploy updated code to questgearhub.com
+- Test messaging functionality

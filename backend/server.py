@@ -997,6 +997,26 @@ async def get_messages(friend_id: str, current_user: User = Depends(get_current_
     
     return messages
 
+class MessageSend(BaseModel):
+    to_user_id: str
+    content: str
+
+@fastapi_app.post("/api/messages/send")
+async def send_message(msg_data: MessageSend, current_user: User = Depends(get_current_user)):
+    """Send a message via HTTP (polling-based alternative to Socket.IO)"""
+    message_id = 'msg_' + ''.join(secrets.choice(string.ascii_lowercase + string.digits) for _ in range(12))
+    message_doc = {
+        "message_id": message_id,
+        "from_user_id": current_user.user_id,
+        "to_user_id": msg_data.to_user_id,
+        "content": msg_data.content,
+        "read_status": False,
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.messages.insert_one(message_doc.copy())
+    return {"message": "Üzenet elküldve", "message_id": message_id}
+
 @fastapi_app.post("/api/upload/event-image")
 async def upload_event_image(file: UploadFile = File(...), current_user: User = Depends(get_current_user)):
     """Upload an image for an event"""
@@ -1074,5 +1094,5 @@ async def shutdown_db_client():
     scheduler.shutdown()
     client.close()
 
-socket_app = socketio.ASGIApp(sio, other_asgi_app=fastapi_app, socketio_path='/api/socket.io')
-app = socket_app
+# Simple FastAPI app without Socket.IO (using polling for messages)
+app = fastapi_app
